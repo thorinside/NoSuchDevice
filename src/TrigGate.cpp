@@ -54,19 +54,19 @@ struct TrigGateWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/TrigGate.svg")));
 
-		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 20.968)), module, TrigGate::START_INPUT_INPUT));
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 33.648)), module, TrigGate::STOP_INPUT_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 109.232)), module, TrigGate::GATE_OUTPUT_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 15.350359)), module, TrigGate::START_LIGHT_LIGHT));
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 27.919857)), module, TrigGate::STOP_LIGHT_LIGHT));
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 102.39134)), module, TrigGate::GATE_LIGHT_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 15.35)), module, TrigGate::START_LIGHT_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 27.92)), module, TrigGate::STOP_LIGHT_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 102.391)), module, TrigGate::GATE_LIGHT_LIGHT));
 	}
 };
 

@@ -25,14 +25,14 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="2.3786088"
-     inkscape:cx="59.278348"
-     inkscape:cy="408.43202"
+     inkscape:cx="62.641658"
+     inkscape:cy="380.68471"
      inkscape:window-width="1093"
      inkscape:window-height="723"
      inkscape:window-x="52"
-     inkscape:window-y="142"
+     inkscape:window-y="114"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="layer2" />
   <defs
      id="defs2">
     <rect
@@ -66,8 +66,7 @@
      inkscape:groupmode="layer"
      id="layer1">
     <g
-       aria-label="TRIG
-GATE"
+       aria-label="TRIG GATE"
        id="text258"
        style="font-size:3.175px;stroke-width:0.264583;fill:#f9f9f9"
        inkscape:label="title"
@@ -138,8 +137,7 @@ GATE"
        id="text1177"
        style="fill:#f9f9f9;-inkscape-font-specification:'.New York, Normal';font-family:'.New York';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:12px;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect1179)" />
     <g
-       aria-label="No Such
- Device"
+       aria-label="No Such  Device"
        id="text1361"
        style="font-size:2.11667px;font-family:'Noto Sans Caucasian Albanian';-inkscape-font-specification:'Noto Sans Caucasian Albanian, Normal';fill:#f9f9f9;stroke-width:0.264583">
       <path
@@ -190,41 +188,41 @@ GATE"
        cx="5.08"
        cy="109.23225"
        r="2.2803071"
-       inkscape:label="gate output" />
+       inkscape:label="gate" />
     <circle
        style="fill:#00ff00;stroke-width:0.264583"
        id="path526"
-       cx="5.08"
-       cy="20.967701"
+       cx="5.0799999"
+       cy="24.671871"
        r="2.2803071"
-       inkscape:label="start input" />
+       inkscape:label="start" />
     <circle
        style="fill:#00ff00;stroke-width:0.264583"
        id="circle528"
-       cx="5.08"
-       cy="33.648434"
+       cx="5.0799999"
+       cy="37.352604"
        r="2.2803071"
-       inkscape:label="stop input" />
+       inkscape:label="stop" />
     <circle
        style="fill:#ff00ff;stroke-width:0.264583"
        id="path748"
-       cx="5.08"
-       cy="102.39134"
+       cx="5.0799999"
+       cy="101.86217"
        r="0.83425868"
-       inkscape:label="gate light" />
+       inkscape:label="gate" />
     <circle
        style="fill:#ff00ff;stroke-width:0.264583"
        id="path750"
-       cx="5.08"
-       cy="27.919857"
+       cx="5.0799999"
+       cy="31.09486"
        r="0.55617243"
-       inkscape:label="stop light" />
+       inkscape:label="stop" />
     <circle
        style="fill:#ff00ff;stroke-width:0.264583"
        id="path752"
-       cx="5.08"
-       cy="15.350359"
+       cx="5.0799999"
+       cy="18.52536"
        r="0.55617243"
-       inkscape:label="start light" />
+       inkscape:label="start" />
   </g>
 </svg>
