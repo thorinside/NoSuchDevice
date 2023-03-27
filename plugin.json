@@ -1,0 +1,29 @@
+{
+  "slug": "NoSuchDevice",
+  "name": "No Such Device",
+  "version": "2.0.0",
+  "license": "CC0-1.0",
+  "brand": "No Such Device",
+  "author": "Thorinside",
+  "authorEmail": "thorinside@gmail.com",
+  "authorUrl": "nosuch.dev",
+  "pluginUrl": "",
+  "manualUrl": "",
+  "sourceUrl": "",
+  "donateUrl": "",
+  "changelogUrl": "",
+  "modules": [
+    {
+      "slug": "TrigGate",
+      "name": "TrigGate",
+      "description": "Create a gate from a start and stop trigger, such as the outputs on the MidiCV module.",
+      "tags": [
+        "trigger",
+        "gate",
+        "start",
+        "stop",
+        "utility"
+      ]
+    }
+  ]
+}
