@@ -96,6 +96,8 @@ struct DivTrig : Module {
 			float out = pulseGenerators[_1X_OUTPUT + i].process(args.sampleTime);
 			outputs[_1X_OUTPUT + i].setVoltage(10.0f * out);
 		}
+
+		lights[TRIG_LIGHT].setSmoothBrightness(input / 10.0f, args.sampleTime);
 	}
 
 	void onReset() override {
