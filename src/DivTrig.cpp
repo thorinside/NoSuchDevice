@@ -139,7 +139,7 @@ struct DivTrigWidget : ModuleWidget {
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 93.071)), module, DivTrig::_7X_OUTPUT));
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 100.667)), module, DivTrig::_8X_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<RedLight>>(mm2px(Vec(5.08, 18.525)), module, DivTrig::TRIG_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 18.525)), module, DivTrig::TRIG_LIGHT));
 	}
 };
 
