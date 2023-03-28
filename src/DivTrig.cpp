@@ -107,6 +107,12 @@ struct DivTrig : Module {
 			pulseGenerators[_1X_OUTPUT + i].reset();
 			outputs[_1X_OUTPUT + i].setVoltage(0.0f);
 		}
+
+		triggerState = false;
+		prevTriggerState = false;
+
+		resetTriggerState = false;
+		prevResetTriggerState = false;
     }
 
     void onRandomize() override {
