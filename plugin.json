@@ -24,6 +24,17 @@
         "stop",
         "utility"
       ]
+    },
+    {
+      "slug": "DivTrig",
+      "name": "DivTrig",
+      "description": "Trigger divider with probability",
+      "tags": [
+        "trigger",
+        "utility",
+        "probability",
+        "divider"
+      ]
     }
   ]
 }
