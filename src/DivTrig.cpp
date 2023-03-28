@@ -1,5 +1,6 @@
 #include "plugin.hpp"
 
+
 struct DivTrig : Module {
 	enum ParamId {
 		PROB_PARAM,
@@ -108,7 +109,7 @@ struct DivTrig : Module {
 
     void onRandomize() override {
         params[PROB_PARAM].setValue(random::uniform());
-    }
+	}
 };
 
 
@@ -125,7 +126,7 @@ struct DivTrigWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(5.08, 35.984)), module, DivTrig::PROB_PARAM));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 24.672)), module, DivTrig::TRIG_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 37.672)), module, DivTrig::RESET_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.191, 110.117)), module, DivTrig::RESET_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 47.497)), module, DivTrig::_1X_OUTPUT));
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 55.093)), module, DivTrig::_2X_OUTPUT));
