@@ -1,6 +1,5 @@
 #include "plugin.hpp"
 
-
 struct DivTrig : Module {
 	enum ParamId {
 		PROB_PARAM,
@@ -8,6 +7,7 @@ struct DivTrig : Module {
 	};
 	enum InputId {
 		TRIG_INPUT,
+		RESET_INPUT,
 		INPUTS_LEN
 	};
 	enum OutputId {
@@ -41,10 +41,14 @@ struct DivTrig : Module {
 	dsp::SchmittTrigger trigger;
 	bool triggerState, prevTriggerState;
 
+	dsp::SchmittTrigger resetTrigger;
+	bool resetTriggerState, prevResetTriggerState;
+
 	DivTrig() {
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configParam(PROB_PARAM, 0.f, 1.f, 0.5f, "Probability");
 		configInput(TRIG_INPUT, "Trig");
+		configInput(RESET_INPUT, "Reset");
 		configOutput(_1X_OUTPUT, "1x");
 		configOutput(_2X_OUTPUT, "2x");
 		configOutput(_3X_OUTPUT, "3x");
@@ -56,6 +60,18 @@ struct DivTrig : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
+		float resetInput = inputs[RESET_INPUT].getVoltage();
+
+		resetTrigger.process(rescale(resetInput, 0.1f, 2.0f, 0.f, 1.f));
+		prevResetTriggerState = resetTriggerState;
+		resetTriggerState = resetTrigger.isHigh();
+
+		if (!prevResetTriggerState && resetTriggerState) {
+			onReset();
+			return;
+		}
+
+
 		float input = inputs[TRIG_INPUT].getVoltage();
 		float prob = params[PROB_PARAM].getValue();
 
@@ -83,6 +99,11 @@ struct DivTrig : Module {
 
 	void onReset() override {
         counters = {1, 2, 3, 4, 5, 6, 7, 8}; // Reset counters
+
+		for (int i = 0; i < (int)counters.size(); i++) {
+			pulseGenerators[_1X_OUTPUT + i].reset();
+			outputs[_1X_OUTPUT + i].setVoltage(0.0f);
+		}
     }
 
     void onRandomize() override {
@@ -104,6 +125,7 @@ struct DivTrigWidget : ModuleWidget {
 		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(5.08, 35.984)), module, DivTrig::PROB_PARAM));
 
 		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 24.672)), module, DivTrig::TRIG_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 37.672)), module, DivTrig::RESET_INPUT));
 
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 47.497)), module, DivTrig::_1X_OUTPUT));
 		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 55.093)), module, DivTrig::_2X_OUTPUT));

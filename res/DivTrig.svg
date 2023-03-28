@@ -25,8 +25,8 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.6819304"
-     inkscape:cx="-17.836648"
-     inkscape:cy="276.17076"
+     inkscape:cx="11.891098"
+     inkscape:cy="309.46584"
      inkscape:window-width="1093"
      inkscape:window-height="723"
      inkscape:window-x="52"
@@ -80,7 +80,7 @@
        xml:space="preserve"
        transform="scale(0.26458333)"
        id="text1157"
-       style="fill:#f9f9f9;white-space:pre;shape-inside:url(#rect1159)" />
+       style="white-space:pre;shape-inside:url(#rect1159);display:inline;fill:#f9f9f9" />
     <text
        xml:space="preserve"
        style="font-size:3.175px;fill:#f9f9f9;stroke-width:0.264583"
@@ -96,7 +96,7 @@
        xml:space="preserve"
        transform="scale(0.26458333)"
        id="text1177"
-       style="fill:#f9f9f9;-inkscape-font-specification:'.New York, Normal';font-family:'.New York';font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:12px;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect1179)" />
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;font-family:'.New York';-inkscape-font-specification:'.New York, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect1179);display:inline;fill:#f9f9f9" />
     <g
        aria-label="No Such  Device"
        id="text1361"
@@ -177,6 +177,13 @@ TRIG"
        cy="24.671871"
        r="2.2803071"
        inkscape:label="trig" />
+    <circle
+       style="fill:#00ff00;stroke-width:0.264583"
+       id="path526-0"
+       cx="5.191206"
+       cy="110.11652"
+       r="2.2803071"
+       inkscape:label="reset" />
     <circle
        style="fill:#0000ff;stroke-width:0.264583"
        id="path526-8"
