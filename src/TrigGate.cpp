@@ -1,20 +1,24 @@
 #include "plugin.hpp"
 
-
-struct TrigGate : Module {
-	enum ParamId {
+struct TrigGate : Module
+{
+	enum ParamId
+	{
 		PARAMS_LEN
 	};
-	enum InputId {
+	enum InputId
+	{
 		START_INPUT,
 		STOP_INPUT,
 		INPUTS_LEN
 	};
-	enum OutputId {
+	enum OutputId
+	{
 		GATE_OUTPUT,
 		OUTPUTS_LEN
 	};
-	enum LightId {
+	enum LightId
+	{
 		START_LIGHT,
 		STOP_LIGHT,
 		GATE_LIGHT,
@@ -23,34 +27,54 @@ struct TrigGate : Module {
 
 	bool gateOn = false;
 
-	TrigGate() {
+	dsp::SchmittTrigger startTrigger;
+	bool startTriggerState, prevStartTriggerState;
+
+	dsp::SchmittTrigger stopTrigger;
+	bool stopTriggerState, prevStopTriggerState;
+
+	TrigGate()
+	{
 		config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
 		configInput(START_INPUT, "Start");
 		configInput(STOP_INPUT, "Stop");
 		configOutput(GATE_OUTPUT, "Gate");
 	}
 
-	void process(const ProcessArgs& args) override {
-		float startTrigger = inputs[START_INPUT].getVoltage();
-        float stopTrigger = inputs[STOP_INPUT].getVoltage();
-        if (startTrigger >= 1.0f && !gateOn) {
-            gateOn = true;
-            outputs[GATE_OUTPUT].setVoltage(10.0f);
-        }
-        else if (stopTrigger >= 1.0f && gateOn) {
-            gateOn = false;
-            outputs[GATE_OUTPUT].setVoltage(0.0f);
-        }
+	void process(const ProcessArgs &args) override
+	{
+		float startTriggerInput = inputs[START_INPUT].getVoltage();
+		float stopTriggerInput = inputs[STOP_INPUT].getVoltage();
 
-		lights[START_LIGHT].setSmoothBrightness(startTrigger / 10.0f, args.sampleTime);
-        lights[STOP_LIGHT].setSmoothBrightness(stopTrigger / 10.0f, args.sampleTime);
-        lights[GATE_LIGHT].setSmoothBrightness(gateOn ? 1.0f : 0.0f, args.sampleTime);
+		startTrigger.process(rescale(startTriggerInput, 0.1f, 2.0f, 0.f, 1.f));
+		prevStartTriggerState = startTriggerState;
+		startTriggerState = startTrigger.isHigh();
+
+		stopTrigger.process(rescale(stopTriggerInput, 0.1f, 2.0f, 0.f, 1.f));
+		prevStopTriggerState = stopTriggerState;
+		stopTriggerState = stopTrigger.isHigh();
+
+		if (!prevStartTriggerState && startTriggerState && !gateOn)
+		{
+			gateOn = true;
+			outputs[GATE_OUTPUT].setVoltage(10.0f);
+		}
+		else if (!prevStopTriggerState && stopTriggerState && gateOn)
+		{
+			gateOn = false;
+			outputs[GATE_OUTPUT].setVoltage(0.0f);
+		}
+
+		lights[START_LIGHT].setSmoothBrightness(startTriggerInput / 10.0f, args.sampleTime);
+		lights[STOP_LIGHT].setSmoothBrightness(stopTriggerInput / 10.0f, args.sampleTime);
+		lights[GATE_LIGHT].setSmoothBrightness(gateOn ? 1.0f : 0.0f, args.sampleTime);
 	}
 };
 
-
-struct TrigGateWidget : ModuleWidget {
-	TrigGateWidget(TrigGate* module) {
+struct TrigGateWidget : ModuleWidget
+{
+	TrigGateWidget(TrigGate *module)
+	{
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/TrigGate.svg")));
 
@@ -70,5 +94,4 @@ struct TrigGateWidget : ModuleWidget {
 	}
 };
 
-
-Model* modelTrigGate = createModel<TrigGate, TrigGateWidget>("TrigGate");
+Model *modelTrigGate = createModel<TrigGate, TrigGateWidget>("TrigGate");
