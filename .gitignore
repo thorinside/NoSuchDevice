@@ -4,3 +4,5 @@
 /*.dylib
 /*.dll
 .DS_Store
+.claude/
+.project

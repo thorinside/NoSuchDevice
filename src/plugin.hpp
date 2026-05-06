@@ -9,3 +9,4 @@ extern Plugin* pluginInstance;
 
 extern Model* modelTrigGate;
 extern Model* modelDivTrig;
+extern Model* modelCorrupter;

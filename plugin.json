@@ -1,15 +1,15 @@
 {
   "slug": "NoSuchDevice",
   "name": "No Such Device",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "license": "CC0-1.0",
   "brand": "No Such Device",
   "author": "Thorinside",
   "authorEmail": "thorinside@gmail.com",
-  "authorUrl": "nosuch.dev",
-  "pluginUrl": "",
+  "authorUrl": "https://github.com/thorinside",
+  "pluginUrl": "https://github.com/thorinside/NoSuchDevice",
   "manualUrl": "",
-  "sourceUrl": "",
+  "sourceUrl": "https://github.com/thorinside/NoSuchDevice",
   "donateUrl": "",
   "changelogUrl": "",
   "modules": [
@@ -34,6 +34,18 @@
         "utility",
         "probability",
         "divider"
+      ]
+    },
+    {
+      "slug": "Corrupter",
+      "name": "Corrupter",
+      "description": "Data Bender-style circuit-bent stereo buffer effect",
+      "manualUrl": "",
+      "tags": [
+        "Effect",
+        "Delay",
+        "Granular",
+        "Glitch"
       ]
     }
   ]

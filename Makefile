@@ -1,20 +1,20 @@
 # If RACK_DIR is not defined when calling the Makefile, default to two directories above
 RACK_DIR ?= ../..
 
-# FLAGS will be passed to both the C and C++ compiler
-FLAGS +=
-CFLAGS +=
-CXXFLAGS +=
+# corrupter DSP submodule
+FLAGS += -Idep/corrupter-dsp/include -Idep/corrupter-dsp/src
 
-# Careful about linking to shared libraries, since you can't assume much about the user's environment and library search path.
-# Static libraries are fine, but they should be added to this plugin's build system.
-LDFLAGS +=
+# Corrupter DSP sources
+SOURCES += dep/corrupter-dsp/src/engine.cpp
+SOURCES += dep/corrupter-dsp/src/c_api.cpp
+SOURCES += dep/corrupter-dsp/src/pitch_quantizer.cpp
+SOURCES += dep/corrupter-dsp/src/internal/clock_engine.cpp
+SOURCES += dep/corrupter-dsp/src/internal/corrupt_engine.cpp
 
-# Add .cpp files to the build
+# Plugin sources
 SOURCES += $(wildcard src/*.cpp)
 
 # Add files to the ZIP package when running `make dist`
-# The compiled plugin and "plugin.json" are automatically added.
 DISTRIBUTABLES += res
 DISTRIBUTABLES += $(wildcard LICENSE*)
 DISTRIBUTABLES += $(wildcard presets)
