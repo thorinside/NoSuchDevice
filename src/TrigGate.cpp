@@ -78,19 +78,19 @@ struct TrigGateWidget : ModuleWidget
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/TrigGate.svg")));
 
-		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(0, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(0, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 24.672)), module, TrigGate::START_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 37.353)), module, TrigGate::STOP_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(7.62, 24.672)), module, TrigGate::START_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(7.62, 37.353)), module, TrigGate::STOP_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.08, 109.232)), module, TrigGate::GATE_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 109.232)), module, TrigGate::GATE_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 18.525)), module, TrigGate::START_LIGHT));
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 31.095)), module, TrigGate::STOP_LIGHT));
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 101.862)), module, TrigGate::GATE_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(7.62, 18.525)), module, TrigGate::START_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(7.62, 31.095)), module, TrigGate::STOP_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(7.62, 101.862)), module, TrigGate::GATE_LIGHT));
 	}
 };
 

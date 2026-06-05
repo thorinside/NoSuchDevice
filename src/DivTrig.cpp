@@ -126,26 +126,26 @@ struct DivTrigWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/DivTrig.svg")));
 
-		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, 0)));
-		addChild(createWidget<ScrewBlack>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
-		addChild(createWidget<ScrewBlack>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(0, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - RACK_GRID_WIDTH, 0)));
+		addChild(createWidget<ScrewBlack>(Vec(0, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
+		addChild(createWidget<ScrewBlack>(Vec(box.size.x - RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(5.08, 35.984)), module, DivTrig::PROB_PARAM));
+		addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(7.62, 35.984)), module, DivTrig::PROB_PARAM));
 
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.08, 24.672)), module, DivTrig::TRIG_INPUT));
-		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(5.191, 110.117)), module, DivTrig::RESET_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(7.62, 24.672)), module, DivTrig::TRIG_INPUT));
+		addInput(createInputCentered<PJ301MPort>(mm2px(Vec(7.62, 110.117)), module, DivTrig::RESET_INPUT));
 
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 47.497)), module, DivTrig::_1X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 55.093)), module, DivTrig::_2X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 62.689)), module, DivTrig::_3X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 70.284)), module, DivTrig::_4X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 77.88)), module, DivTrig::_5X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 85.476)), module, DivTrig::_6X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 93.071)), module, DivTrig::_7X_OUTPUT));
-		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(5.191, 100.667)), module, DivTrig::_8X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 47.497)), module, DivTrig::_1X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 55.093)), module, DivTrig::_2X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 62.689)), module, DivTrig::_3X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 70.284)), module, DivTrig::_4X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 77.88)), module, DivTrig::_5X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 85.476)), module, DivTrig::_6X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 93.071)), module, DivTrig::_7X_OUTPUT));
+		addOutput(createOutputCentered<PJ301MPort>(mm2px(Vec(7.62, 100.667)), module, DivTrig::_8X_OUTPUT));
 
-		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(5.08, 18.525)), module, DivTrig::TRIG_LIGHT));
+		addChild(createLightCentered<MediumLight<BlueLight>>(mm2px(Vec(7.62, 18.525)), module, DivTrig::TRIG_LIGHT));
 	}
 };
 
