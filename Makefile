@@ -2,14 +2,14 @@
 RACK_DIR ?= ../..
 
 # corrupter DSP submodule
-FLAGS += -Idep/corrupter-dsp/include -Idep/corrupter-dsp/src
+FLAGS += -Ivendor/corrupter-dsp/include -Ivendor/corrupter-dsp/src
 
 # Corrupter DSP sources
-SOURCES += dep/corrupter-dsp/src/engine.cpp
-SOURCES += dep/corrupter-dsp/src/c_api.cpp
-SOURCES += dep/corrupter-dsp/src/pitch_quantizer.cpp
-SOURCES += dep/corrupter-dsp/src/internal/clock_engine.cpp
-SOURCES += dep/corrupter-dsp/src/internal/corrupt_engine.cpp
+SOURCES += vendor/corrupter-dsp/src/engine.cpp
+SOURCES += vendor/corrupter-dsp/src/c_api.cpp
+SOURCES += vendor/corrupter-dsp/src/pitch_quantizer.cpp
+SOURCES += vendor/corrupter-dsp/src/internal/clock_engine.cpp
+SOURCES += vendor/corrupter-dsp/src/internal/corrupt_engine.cpp
 
 # Plugin sources
 SOURCES += $(wildcard src/*.cpp)
