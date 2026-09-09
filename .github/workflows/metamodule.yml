@@ -1,0 +1,52 @@
+name: MetaModule plugin
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin (with corrupter-dsp submodule)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Checkout MetaModule plugin SDK
+        uses: actions/checkout@v4
+        with:
+          repository: 4ms/metamodule-plugin-sdk
+          ref: api-v2.3.0
+          submodules: recursive
+          path: metamodule-plugin-sdk
+
+      - name: Install ARM toolchain and build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build python3
+          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz
+          sudo tar xf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz -C /opt
+          echo "/opt/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
+
+      - name: Build .mmplugin
+        run: |
+          cmake -S metamodule -B metamodule/build -G Ninja \
+            -DMETAMODULE_SDK_DIR=${GITHUB_WORKSPACE}/metamodule-plugin-sdk \
+            -DINSTALL_DIR=${GITHUB_WORKSPACE}/metamodule/dist
+          cmake --build metamodule/build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NoSuchDevice-mmplugin
+          path: metamodule/dist/NoSuchDevice-v*.mmplugin
+
+      - name: Attach to GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: metamodule/dist/NoSuchDevice-v*.mmplugin

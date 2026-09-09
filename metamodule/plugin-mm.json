@@ -1,0 +1,21 @@
+{
+    "MetaModuleBrandName": "No Such Device",
+    "MetaModulePluginMaintainer": "Neal Sanche (Thorinside)",
+    "MetaModulePluginMaintainerEmail": "thorinside@gmail.com",
+    "MetaModulePluginMaintainerUrl": "https://github.com/thorinside/NoSuchDevice",
+    "MetaModuleDescription": "TrigGate, DivTrig and Corrupter: trigger utilities and a clocked, corrupting stutter/repeat effect.",
+    "MetaModuleIncludedModules": [
+        {
+            "slug": "TrigGate",
+            "name": "TrigGate"
+        },
+        {
+            "slug": "DivTrig",
+            "name": "DivTrig"
+        },
+        {
+            "slug": "Corrupter",
+            "name": "Corrupter"
+        }
+    ]
+}

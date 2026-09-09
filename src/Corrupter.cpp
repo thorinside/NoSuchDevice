@@ -6,11 +6,22 @@
 #include <cstring>
 #include <string>
 
+#ifdef METAMODULE
+#include "gui/notification.hh"
+#endif
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
+#ifdef METAMODULE
+// MetaModule's smallest host block is 16 frames. Accumulating 256 frames
+// would concentrate the DSP into periodic bursts and add ~5 ms of latency, so
+// run the engine on the host's minimum quantum instead.
+static constexpr uint32_t kMaxBlockFrames = 16;
+#else
 static constexpr uint32_t kMaxBlockFrames = 256;
+#endif
 static constexpr float kDefaultSampleRate = 48000.f;
 static constexpr float kMaxBufferSeconds = 30.f;
 static constexpr int kWaveBins = 128;
@@ -115,6 +126,14 @@ struct CorrupterModule : Module {
 	corrupter::Engine engine;
 	void* dram = nullptr;
 	bool initialised = false;
+	float engine_sample_rate = kDefaultSampleRate;
+#ifdef METAMODULE
+	// The MetaModule adapter constructs one instance of every module at plugin
+	// load just to scan the widget tree, so the ~11-23 MiB buffer is allocated
+	// lazily on the first process() call (which the firmware makes once before
+	// audio starts) rather than in the constructor.
+	bool engine_pending = true;
+#endif
 
 	// Persistent state (survives patch save/load)
 	corrupter::PersistentState persistent;
@@ -207,7 +226,9 @@ struct CorrupterModule : Module {
 		configOutput(OUTPUT_L, "Audio L");
 		configOutput(OUTPUT_R, "Audio R");
 
+#ifndef METAMODULE
 		initEngine(kDefaultSampleRate);
+#endif
 	}
 
 	~CorrupterModule() override {
@@ -226,14 +247,26 @@ struct CorrupterModule : Module {
 
 		corrupter::EngineConfig cfg;
 		cfg.sample_rate_hz = sampleRate;
+#ifdef METAMODULE
+		// Size the buffer for the rate we are actually running at; a rate
+		// change reallocates (audio is paused while the host changes rate).
+		cfg.max_supported_sample_rate_hz = sampleRate;
+#else
 		cfg.max_supported_sample_rate_hz = 96000.f;
+#endif
 		cfg.max_block_frames = kMaxBlockFrames;
 		cfg.max_buffer_seconds = kMaxBufferSeconds;
 		cfg.random_seed = 1;
+		engine_sample_rate = sampleRate;
 
 		size_t dram_bytes = corrupter::Engine::required_dram_bytes(cfg);
 		dram = malloc(dram_bytes);
-		if (!dram) return;
+		if (!dram) {
+#ifdef METAMODULE
+			MetaModule::Gui::notify_user("Corrupter: not enough memory for audio buffer", 3000);
+#endif
+			return;
+		}
 
 		initialised = engine.initialise(dram, dram_bytes, cfg);
 		if (initialised) {
@@ -248,8 +281,13 @@ struct CorrupterModule : Module {
 		first_block = true;
 	}
 
-	void onSampleRateChange() override {
-		initEngine(APP->engine->getSampleRate());
+	void onSampleRateChange(const SampleRateChangeEvent& e) override {
+#ifdef METAMODULE
+		// Not allocated yet: the first process() call will pick up the rate.
+		if (engine_pending) return;
+		if (initialised && std::abs(e.sampleRate - engine_sample_rate) < 1.f) return;
+#endif
+		initEngine(e.sampleRate);
 	}
 
 	void applyScale() {
@@ -387,7 +425,9 @@ struct CorrupterModule : Module {
 		lights[LIGHT_CLOCK_SOURCE].setBrightness(clock_internal ? 0.f : 1.f);
 		current_algo = static_cast<int>(persistent.corrupt_algorithm);
 
-		// Update button tooltips to reflect current state
+#ifndef METAMODULE
+		// Update button tooltips to reflect current state. std::string
+		// assignment is forbidden in the MetaModule audio context.
 		paramQuantities[PARAM_BEND_ENABLE]->description = persistent.bend_enabled ? "ON" : "OFF";
 		paramQuantities[PARAM_BREAK_ENABLE]->description = persistent.break_enabled ? "ON" : "OFF";
 		paramQuantities[PARAM_FREEZE_ENABLE]->description = persistent.freeze_enabled ? "ON" : "OFF";
@@ -395,10 +435,10 @@ struct CorrupterModule : Module {
 		paramQuantities[PARAM_CORRUPT_ALGO]->description = (current_algo >= 0 && current_algo <= 4) ? kAlgoNames[current_algo] : "";
 		paramQuantities[PARAM_BREAK_MICRO_MODE]->description = persistent.break_silence_mode ? "Silence ON" : "Silence OFF";
 		paramQuantities[PARAM_STEREO_MODE]->description = persistent.unique_stereo_mode ? "Stereo ON" : "Stereo OFF";
+#endif
 
 		// Update waveform display
-		float sr = APP->engine->getSampleRate();
-		uint32_t buf_frames = static_cast<uint32_t>(kMaxBufferSeconds * sr);
+		uint32_t buf_frames = static_cast<uint32_t>(kMaxBufferSeconds * engine_sample_rate);
 		uint32_t frames_per_bin = (buf_frames > 0) ? buf_frames / kWaveBins : 1u;
 		for (uint32_t i = 0; i < buf_pos; i++) {
 			float s = out_l_buf[i];
@@ -420,6 +460,12 @@ struct CorrupterModule : Module {
 	}
 
 	void process(const ProcessArgs& args) override {
+#ifdef METAMODULE
+		if (engine_pending) {
+			engine_pending = false;
+			initEngine(args.sampleRate > 0.f ? args.sampleRate : kDefaultSampleRate);
+		}
+#endif
 		if (!initialised) return;
 
 		// Write inputs to buffer
@@ -630,8 +676,11 @@ struct CorrupterDisplay : LedDisplay {
 
 // ---------------------------------------------------------------------------
 // Panel Label Overlay (NanoVG text replaces SVG path text)
+// On MetaModule the labels are baked into the faceplate PNG instead (see
+// metamodule/scripts/bake_panels.py), so this widget is compiled out there.
 // ---------------------------------------------------------------------------
 
+#ifndef METAMODULE
 struct CorrupterLabels : TransparentWidget {
 	std::string fontPath;
 
@@ -702,6 +751,7 @@ struct CorrupterLabels : TransparentWidget {
 		TransparentWidget::drawLayer(args, layer);
 	}
 };
+#endif // !METAMODULE
 
 // ---------------------------------------------------------------------------
 // Widget
@@ -712,12 +762,14 @@ struct CorrupterWidget : ModuleWidget {
 		setModule(module);
 		setPanel(createPanel(asset::plugin(pluginInstance, "res/Corrupter.svg")));
 
+#ifndef METAMODULE
 		// Panel text labels (rendered via NanoVG)
 		{
 			CorrupterLabels* labels = createWidget<CorrupterLabels>(Vec(0, 0));
 			labels->box.size = box.size;
 			addChild(labels);
 		}
+#endif
 
 		// Screws
 		addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, 0)));

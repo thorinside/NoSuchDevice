@@ -63,7 +63,7 @@ struct DivTrig : Module {
 	void process(const ProcessArgs& args) override {
 		float resetInput = inputs[RESET_INPUT].getVoltage();
 
-		resetTrigger.process(rescale(resetInput, 0.1f, 2.0f, 0.f, 1.f));
+		resetTrigger.process(rescale(resetInput, 0.1f, 2.0f, 0.f, 1.f), 0.f, 1.f);
 		prevResetTriggerState = resetTriggerState;
 		resetTriggerState = resetTrigger.isHigh();
 
@@ -76,7 +76,7 @@ struct DivTrig : Module {
 		float input = inputs[TRIG_INPUT].getVoltage();
 		float prob = params[PROB_PARAM].getValue();
 
-		trigger.process(rescale(input, 0.1f, 2.0f, 0.f, 1.f));
+		trigger.process(rescale(input, 0.1f, 2.0f, 0.f, 1.f), 0.f, 1.f);
 		prevTriggerState = triggerState;
 		triggerState = trigger.isHigh();
 

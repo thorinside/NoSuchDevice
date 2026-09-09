@@ -46,11 +46,11 @@ struct TrigGate : Module
 		float startTriggerInput = inputs[START_INPUT].getVoltage();
 		float stopTriggerInput = inputs[STOP_INPUT].getVoltage();
 
-		startTrigger.process(rescale(startTriggerInput, 0.1f, 2.0f, 0.f, 1.f));
+		startTrigger.process(rescale(startTriggerInput, 0.1f, 2.0f, 0.f, 1.f), 0.f, 1.f);
 		prevStartTriggerState = startTriggerState;
 		startTriggerState = startTrigger.isHigh();
 
-		stopTrigger.process(rescale(stopTriggerInput, 0.1f, 2.0f, 0.f, 1.f));
+		stopTrigger.process(rescale(stopTriggerInput, 0.1f, 2.0f, 0.f, 1.f), 0.f, 1.f);
 		prevStopTriggerState = stopTriggerState;
 		stopTriggerState = stopTrigger.isHigh();
 
