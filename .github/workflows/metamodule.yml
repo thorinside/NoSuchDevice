@@ -27,13 +27,15 @@ jobs:
           submodules: recursive
           path: metamodule-plugin-sdk
 
-      - name: Install ARM toolchain and build tools
+      - name: Install ARM toolchain (cached by the action)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '12.3.Rel1'
+
+      - name: Install build tools
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake ninja-build python3
-          wget -q https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz
-          sudo tar xf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz -C /opt
-          echo "/opt/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/bin" >> $GITHUB_PATH
 
       - name: Build .mmplugin
         run: |
