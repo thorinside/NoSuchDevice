@@ -66,6 +66,37 @@ the label table in the script and re-run it.
 - TrigGate and DivTrig pass explicit Schmitt-trigger thresholds because the
   SDK's `dsp::SchmittTrigger::process()` defaults differ from Rack's.
 
+## Testing without hardware: the 4ms firmware simulator
+
+The [4ms/metamodule](https://github.com/4ms/metamodule) firmware repo ships a
+desktop simulator that can compile this directory in as a built-in brand
+(`docs/simulator-ext-plugins.md` there). The `.mmplugin` itself cannot be
+loaded into the simulator, but the same sources, faceplates and
+`#ifdef METAMODULE` paths are exercised.
+
+Register the brand in the firmware clone's `simulator/ext-plugins.cmake`:
+
+```cmake
+list(APPEND ext_builtin_brand_paths "${CMAKE_CURRENT_LIST_DIR}/../../NoSuchDevice/metamodule")
+list(APPEND ext_builtin_brand_libname "NoSuchDevice")
+```
+
+Then build (`cmake --preset Default -DSIMULATOR_MIDI=OFF && cmake --build build`
+for the GUI, `cmake --preset headless && cmake --build build-headless` for
+audio rendering) and use the patches in `sim-patches/`:
+
+```sh
+cd <firmware>/simulator
+# Screenshot the Corrupter module view (module index 1 in the patch)
+./build/simulator -p ../../NoSuchDevice/metamodule/sim-patches/ --patch /CorrupterTest.yml     --page moduleview --module 1 --screenshot corrupter.bmp --screenshot-frames 30
+# Render 8 s of audio through Corrupter and report CPU load
+build-headless/simulator -p ../../NoSuchDevice/metamodule/sim-patches/CorrupterTest.yml     --in in.wav --out out.wav -n 384000
+```
+
+Headless WAV files are stereo float32 at 48 kHz, with sample values used as
+volts directly. Note that the release-name copy step in `CMakeLists.txt` is
+skipped under the simulator's fake SDK.
+
 ## Release
 
 The `MetaModule plugin` GitHub Actions workflow builds the plugin on every

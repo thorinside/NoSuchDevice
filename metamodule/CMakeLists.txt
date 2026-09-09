@@ -57,12 +57,17 @@ create_plugin(
     DESTINATION     ${INSTALL_DIR}
 )
 
-# Also emit the release-style name: NoSuchDevice-v<version>.mmplugin
-file(READ ${PLUGIN_ROOT}/plugin.json _plugin_json)
-string(JSON _plugin_version GET "${_plugin_json}" version)
-add_custom_command(TARGET plugin POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-        ${INSTALL_DIR}/NoSuchDevice.mmplugin
-        ${INSTALL_DIR}/NoSuchDevice-v${_plugin_version}.mmplugin
-    COMMENT "Copying NoSuchDevice.mmplugin -> NoSuchDevice-v${_plugin_version}.mmplugin"
-)
+# Also emit the release-style name: NoSuchDevice-v<version>.mmplugin.
+# Only with the real SDK: the firmware simulator's fake SDK (see
+# docs/simulator-ext-plugins.md in the 4ms/metamodule repo) builds this
+# directory as a built-in brand and produces no .mmplugin.
+if(EXISTS ${METAMODULE_SDK_DIR}/api-symbols.txt)
+    file(READ ${PLUGIN_ROOT}/plugin.json _plugin_json)
+    string(JSON _plugin_version GET "${_plugin_json}" version)
+    add_custom_command(TARGET plugin POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${INSTALL_DIR}/NoSuchDevice.mmplugin
+            ${INSTALL_DIR}/NoSuchDevice-v${_plugin_version}.mmplugin
+        COMMENT "Copying NoSuchDevice.mmplugin -> NoSuchDevice-v${_plugin_version}.mmplugin"
+    )
+endif()
