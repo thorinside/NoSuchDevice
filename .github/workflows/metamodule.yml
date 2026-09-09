@@ -32,10 +32,12 @@ jobs:
         with:
           release: '12.3.Rel1'
 
-      - name: Install build tools
+      - name: Check build tools (preinstalled on ubuntu runners)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake ninja-build python3
+          # Avoid apt-get update: third-party mirrors on the runner image
+          # occasionally fail with hash mismatches. Only install if missing.
+          command -v ninja >/dev/null || (sudo apt-get update && sudo apt-get install -y ninja-build)
+          cmake --version && ninja --version && python3 --version
 
       - name: Build .mmplugin
         run: |
